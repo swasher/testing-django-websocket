@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Лог-файл</title>
+    <style>
+        #log-content{
+         height: 300px;
+         border: 1px solid black;
+         overflow-y: scroll;
+        }
+    </style>
+</head>
+<body>
+    <h1>Содержимое лог-файла</h1>
+    <a href="{% url 'index' %}">Перейти на страницу добавления имени</a>
+    <div id="log-content"></div>
+    <script>
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/log/');
+        const logContent = document.getElementById('log-content');
+
+        socket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            const newLogEntry = document.createElement('div');
+            newLogEntry.innerText = data.content;
+            logContent.appendChild(newLogEntry);
+            logContent.scrollTop = logContent.scrollHeight;
+        };
+    </script>
+</body>
+</html>

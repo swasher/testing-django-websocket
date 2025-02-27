@@ -1,0 +1,88 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Лог-файл</title>-->
+
+<!--    <style>-->
+<!--        #log-content{-->
+<!--         height: 300px;-->
+<!--         border: 1px solid black;-->
+<!--         overflow-y: scroll;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>Добавьте текст в лог-файл</h1>-->
+<!--    <form onsubmit="event.preventDefault(); addName();">-->
+<!--        <input type="text" id="name" placeholder="Введите имя">-->
+<!--        <button type="submit">Добавить</button>-->
+<!--    </form>-->
+<!--    <h2>Содержимое лог-файла:</h2>-->
+<!--    <div id="log-content"></div>-->
+
+
+<!--    <script>-->
+<!--        const socket = new WebSocket('ws://' + window.location.host + '/ws/log/');-->
+<!--        const logContent = document.getElementById('log-content');-->
+
+<!--        socket.onmessage = function(event) {-->
+<!--            const data = JSON.parse(event.data);-->
+<!--            const newLogEntry = document.createElement('div');-->
+<!--            newLogEntry.innerText = data.content;-->
+<!--            logContent.appendChild(newLogEntry);-->
+<!--            logContent.scrollTop = logContent.scrollHeight;-->
+<!--        };-->
+
+<!--        function addName() {-->
+<!--            const name = document.getElementById('name').value;-->
+<!--            fetch('/add_name/', {-->
+<!--                method: 'POST',-->
+<!--                headers: {-->
+<!--                    'Content-Type': 'application/x-www-form-urlencoded',-->
+<!--                    'X-CSRFToken': '{{ csrf_token }}',-->
+<!--                },-->
+<!--                body: `name=${encodeURIComponent(name)}`,-->
+<!--            }).then(response => {-->
+<!--                if (response.ok) {-->
+<!--                    document.getElementById('name').value = '';-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+<!--    </script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Форма</title>
+</head>
+<body>
+    <h1>Добавьте имя в лог-файл</h1>
+    <a href="{% url 'log' %}">Перейти на страницу лога</a>
+    <form onsubmit="event.preventDefault(); addName();">
+        <input type="text" id="name" placeholder="Введите имя">
+        <button type="submit">Добавить</button>
+    </form>
+    <script>
+        function addName() {
+            const name = document.getElementById('name').value;
+            fetch('/add_name/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: `name=${encodeURIComponent(name)}`,
+            }).then(response => {
+                if (response.ok) {
+                    document.getElementById('name').value = '';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
